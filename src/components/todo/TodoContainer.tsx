@@ -4,12 +4,15 @@ import TodoCard from "./TodoCard";
 import TodoFilter from "./TodoFilter";
 import TodoModal from "./TodoModal";
 import { useGetTodosQuery } from "@/redux/api/api";
+import { useState } from "react";
 
 const TodoContainer = () => {
   //*local todos
   // const { todos } = useAppSelector((state) => state.todos);
+
+  const [priority, setPriority] = useState("");
   //live server
-  const { data: todos, isLoading } = useGetTodosQuery(undefined);
+  const { data: todos, isLoading } = useGetTodosQuery(priority);
 
   if (isLoading) {
     return <p>Loading.......</p>;
@@ -20,12 +23,12 @@ const TodoContainer = () => {
       <div className="flex justify-between mb-5">
         <TodoModal />
 
-        <TodoFilter />
+        <TodoFilter priority={priority} setPriority={setPriority} />
       </div>
       <div className="bg-primary-gradient rounded-xl h-full p-[5px]">
         <div className="bg-white p-5 w-full h-full rounded-lg space-y-3 ">
-          {todos.data?.map((item) => (
-            <TodoCard key={item.id} {...item} />
+          {todos.data?.map((item: any) => (
+            <TodoCard key={item._id} {...item} />
           ))}
         </div>
 
